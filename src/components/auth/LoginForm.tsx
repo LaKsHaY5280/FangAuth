@@ -4,7 +4,7 @@ import * as z from "zod";
 import CardWrapper from "./CardWrapper";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoginSchema } from "../../schemas";
+import { LoginSchema } from "@/lib/schemas";
 import {
   Form,
   FormControl,
@@ -17,15 +17,32 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import FormError from "../FormError";
 import FormSuccess from "../FormSuccess";
+import { login } from "@/lib/actions/login";
+import { useState, useTransition } from "react";
 
 const LoginForm = () => {
+  const [error, setError] = useState<string | undefined>("");
+  const [success, setSuccess] = useState<string | undefined>("");
+  const [isPending, startTransition] = useTransition();
+
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: { email: "", password: "" },
   });
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
-    console.log(values);
+    setError("");
+    setSuccess("");
+
+    startTransition(() => {
+      login(values).then((data) => {
+        if (data.error) {
+          return setError(data.error);
+        }
+
+        setSuccess("Email sent successfully!");
+      });
+    });
   };
 
   return (
@@ -48,6 +65,7 @@ const LoginForm = () => {
                     <FormControl>
                       <Input
                         {...field}
+                        disabled={isPending}
                         type="email"
                         placeholder="name123@mail.com"
                       />
@@ -70,6 +88,7 @@ const LoginForm = () => {
                     <FormControl>
                       <Input
                         {...field}
+                        disabled={isPending}
                         type="password"
                         placeholder="********"
                       />
@@ -83,10 +102,10 @@ const LoginForm = () => {
             />
           </div>
 
-          <FormError msg="Please fill out all fields." />
-          <FormSuccess msg="Email sent successfully!" />
+          <FormError msg={error} />
+          <FormSuccess msg={success} />
 
-          <Button type="submit" className=" w-full">
+          <Button type="submit" className=" w-full" disabled={isPending}>
             Log In
           </Button>
         </form>
