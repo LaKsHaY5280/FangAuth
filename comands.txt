@@ -1,0 +1,17 @@
+Package Commands = 
+
+shadcn init
+shadcn-ui@latest add button card form input label
+
+react-icons
+
+lucidicon
+
+-D prisma
+@prisma/client
+prisma init
+@auth/prisma-adapter
+
+
+bcrypt
+@types/bcrypt

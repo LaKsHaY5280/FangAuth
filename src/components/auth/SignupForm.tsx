@@ -36,12 +36,15 @@ const SignupForm = () => {
 
     startTransition(() => {
       signup(values).then((data) => {
-        form.reset({ name: "", email: "", password: "" });
+
+        if (data.success) {
+          form.reset({ name: "", email: "", password: "" });
+        }
         if (data.error) {
           return setError(data.error);
         }
 
-        setSuccess("Email sent successfully!");
+        setSuccess("Account created successfully!");
         setTimeout(() => {
           setSuccess("");
         }, 1000);
