@@ -1,17 +1,21 @@
 Package Commands = 
 
-shadcn init
-shadcn-ui@latest add button card form input label
+npx shadcn-ui@latest init
+npx shadcn-ui@latest add button card form input label
 
-react-icons
+npm i react-icons
 
-lucidicon
+npm i lucidicon
 
--D prisma
-@prisma/client
-prisma init
-@auth/prisma-adapter
+npm i -D prisma
+npm i @prisma/client
+npx prisma init
+npm i @auth/prisma-adapter
 
 
-bcrypt
-@types/bcrypt
+npm i bcrypt
+npm i @types/bcrypt
+
+npm i next-auth@beta
+npx auth secret
+
